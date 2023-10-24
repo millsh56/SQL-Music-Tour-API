@@ -2,7 +2,29 @@
 const { Sequelize, DataTypes,  Model } = require('sequelize')
 const sequelize = new Sequelize(process.env.PG_URI)
 // MODEL
-class Event extends Model{}
+class Event extends Model {
+    static associate({ Stage, StageEvent, MeetGreet, SetTime }) {
+      // STAGES
+      Event.belongsToMany(Stage, {
+        foreignKey: "event_id",
+        as: "stages",
+        through: StageEvent
+      })
+      
+      // MEET AND GREET
+      Event.hasMany(MeetGreet, {
+        foreignKey: "event_id",
+        as: "meet_greets"
+      })
+
+      // SET TIMES
+      Event.hasMany(SetTime, {
+        foreignKey: "event_id",
+        as: "set_times"
+      })
+    }
+  }
+
 Event.init({
     event_id: { 
         type: DataTypes.INTEGER, 

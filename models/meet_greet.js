@@ -2,7 +2,21 @@
 const { Sequelize, DataTypes,  Model } = require('sequelize')
 const sequelize = new Sequelize(process.env.PG_URI)
 // MODEL
-class Meet_Greet extends Model{}
+class MeetGreet extends Model {
+    static associate({ Band, Event }) {
+      // BAND
+      MeetGreet.belongsTo(Band, {
+        foreignKey: "band_id",
+        as: "band"
+      })
+
+      // EVENT
+      MeetGreet.belongsTo(Event, {
+        foreignKey: "event_id",
+        as: "event"
+      })
+    }
+  }
 Meet_Greet.init({
     meet_greet_id: { 
         type: DataTypes.INTEGER, 
